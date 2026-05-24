@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Password Manager</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1 class="title">
+            Password Manager
+        </h1>
+
+        <p class="subtitle">
+            Flask + MySQL Secure Password Vault
+        </p>
+
+
+        <!-- SAVE PASSWORD FORM -->
+
+        <form action="/save"
+              method="POST"
+              class="form-box">
+
+            <input type="text"
+                   name="website"
+                   placeholder="Website / App Name"
+                   required>
+
+            <input type="text"
+                   name="username"
+                   placeholder="Username / Email"
+                   required>
+
+            <input type="password"
+                   name="password"
+                   placeholder="Password"
+                   required>
+
+            <button type="submit">
+                Save Password
+            </button>
+
+        </form>
+
+
+        <!-- SAVED PASSWORDS -->
+
+        <div class="password-list">
+
+            {% for item in passwords %}
+
+            <div class="password-card">
+
+                <div class="password-info">
+
+                    <h2>
+                        {{ item[1] }}
+                    </h2>
+
+                    <p>
+                        Username:
+                        {{ item[2] }}
+                    </p>
+
+
+                    <!-- PASSWORD FIELD -->
+
+                    <div class="password-row">
+
+                        <input type="password"
+                               value="{{ item[3] }}"
+                               id="pass{{ item[0] }}"
+                               class="password-field"
+                               readonly>
+
+                        <button type="button"
+                                class="show-btn"
+                                onclick="togglePassword({{ item[0] }})">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DELETE BUTTON -->
+
+                <a href="/delete/{{ item[0] }}"
+                   class="delete-btn">
+
+                    Delete
+
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        function togglePassword(id) {
+
+            let field =
+                document.getElementById(
+                    "pass" + id
+                );
+
+            if (field.type === "password") {
+
+                field.type = "text";
+
+            }
+
+            else {
+
+                field.type = "password";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
